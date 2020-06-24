@@ -1,0 +1,112 @@
+.slides {
+  opacity: 0;
+  -webkit-transition: opacity .5s ease;
+  -o-transition: opacity .5s ease;
+  transition: opacity .5s ease; }
+
+.reveal.ready .slides {
+  opacity: 1; }
+
+.backgrounds {
+  background: #1a1626; }
+
+.menubar {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: none;
+  padding: 0 3vmin;
+  z-index: 2;
+  border-bottom: 1px solid white;
+  height: 50px;
+  min-height: 50px;
+  top: -50px;
+  -webkit-transition: top 1s ease-in-out;
+  -o-transition: top 1s ease-in-out;
+  transition: top 1s ease-in-out; }
+
+body:not(.hide-menubar) .reveal.ready .menubar {
+  top: 0; }
+
+.reveal .lowercase {
+  text-transform: none; }
+
+.row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+  .row .col {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+
+.reveal .flags {
+  display: block;
+  position: relative;
+  margin-bottom: -80px !important;
+  margin-top: 80px;
+  /* IMAGE STYLES */
+  /* CHECKED STYLES */ }
+  .reveal .flags label {
+    display: inline-block; }
+  .reveal .flags [type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0; }
+  .reveal .flags img {
+    border-radius: 40px;
+    border: 4px solid #1a1626;
+    margin: 0;
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    opacity: 0.5; }
+    .reveal .flags img:hover {
+      opacity: 1; }
+  .reveal .flags [type=radio]:checked + img {
+    pointer-events: none;
+    opacity: 1;
+    border: 4px solid white; }
+
+#chooser, .choices {
+  color: black;
+  width: 100px;
+  height: 32px; }
+
+.choices__list--dropdown .choices__item--selectable {
+  padding-right: 100px;
+  padding: 10px !important; }
+
+.choices__inner {
+  min-height: 20px;
+  height: 32px; }
+
+.choices__inner {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  background: none;
+  padding: 6px 6px 3px;
+  border: 1px solid #ddd;
+  border-radius: 2.5px;
+  font-size: 14px;
+  overflow: hidden;
+  color: white; }
+
+.choices[data-type*=select-one]:after {
+  border-color: white transparent transparent; }
+
+.choices.is-open[data-type*=select-one]:after {
+  border-color: transparent transparent white; }

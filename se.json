@@ -1,0 +1,18 @@
+{
+   "intro":{
+      "subtitle":"på Reveal.js"
+   },
+   "fruit":{
+      "title":"Frukt",
+      "apple":"Ett äpple",
+      "orange":"En apelsin"
+   },
+   "animals":{
+      "title":"Djur",
+      "dog":"En hund",
+      "cat":"En katt"
+   } 
+}
+
+
+

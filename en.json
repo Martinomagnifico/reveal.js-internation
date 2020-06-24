@@ -1,0 +1,16 @@
+{
+   "intro":{
+      "title":"Internation",
+      "subtitle":"for Reveal.js"
+   },
+   "fruit":{
+      "title":"Fruit",
+      "apple":"An apple",
+      "orange":"An orange"
+   },
+   "animals":{
+      "title":"Animals",
+      "dog":"A dog",
+      "cat":"A cat"
+   }
+}

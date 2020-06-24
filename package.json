@@ -1,0 +1,16 @@
+{
+    "name": "reveal.js-internation",
+    "version": "1.0.0",
+    "description": "Localization of Reveal.js presentations",
+    "keywords": "reveal, reveal.js, reveal-plugin, plugin, internationalization",
+    "homepage": "https://github.com/Martinomagnifico/reveal.js-internation",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Martinomagnifico/reveal.js-internation.git"
+    },
+    "peerDependencies": {
+        "reveal.js": "^4.0"
+    },
+    "author": "Martijn De Jongh",
+    "license": "MIT, Copyright (C) 2020 Martijn De Jongh"
+}

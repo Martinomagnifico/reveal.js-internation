@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Internation for Reveal.js</title>
+    <meta name="description" content="">
+    <meta name="author" content="Martinomagnifico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css">
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/demo.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="menubar">
+            <select class="langchooser" id="chooser">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="se">Svenska</option>
+                <option value="cn">中文</option>
+            </select>
+        </div>
+        <div class="slides">
+            <section id="intro" data-state="hide-menubar">
+                <div>
+                    <h1 class="lowercase" data-i18n="title">Internation</h1>
+                    <h3 data-i18n="subtitle">for Reveal.js</h3>
+                    <div class="langchooser flags">
+                        <label>
+                            <input type="radio" name="langradios" value="en" checked><img src="img/en.svg">
+                        </label>
+                        <label>
+                            <input type="radio" name="langradios" value="fr"><img src="img/fr.svg">
+                        </label>
+                        <label>
+                            <input type="radio" name="langradios" value="se"><img src="img/se.svg">
+                        </label>
+                        <label>
+                            <input type="radio" name="langradios" value="cn"><img src="img/cn.svg">
+                        </label>
+                    </div>
+                </div>
+            </section>
+            <section id="fruit">
+                <h3 data-i18n="title">Fruit</h3>
+                <div class="row">
+                    <div class="col"><img src="img/apple.png">
+                        <p data-i18n="apple">An apple</p>
+                    </div>
+                    <div class="col"><img src="img/orange.png">
+                        <p data-i18n="orange">An orange</p>
+                    </div>
+                </div>
+            </section>
+            <section id="animals">
+                <h3 data-i18n="title">Animals</h3>
+                <div class="row">
+                    <div class="col"><img src="img/dog.png">
+                        <p data-i18n="dog">A dog</p>
+                    </div>
+                    <div class="col"><img src="img/cat.png">
+                        <p data-i18n="cat">A cat</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        const element = document.querySelector('#chooser');
+        const choices = new Choices(element, {
+            searchEnabled: false,
+            itemSelectText: ''
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+    <script src="plugin/internation/internation.js"></script>
+    <script>
+        Reveal.initialize({
+            transition: "convex",
+            internation: {
+                locale: "en",
+                localename: "English",
+                languages: {
+                    en: {
+                        name: "English",
+                        dictionary: "en.json"
+                    },
+                    fr: {
+                        name: "Français",
+                        dictionary: "fr.json"
+                    },
+                    se: {
+                        name: "Svenska",
+                        dictionary: "se.json"
+                    },
+                    cn: {
+                        name: "中文",
+                        dictionary: "cn.json"
+                    }
+                }
+            },
+            plugins: [
+                Internation
+            ]
+        });
+    </script>
+</body>
+
+</html>

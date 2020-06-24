@@ -1,0 +1,19 @@
+{
+   "intro":{
+      "subtitle":"为Reveal.js"
+   },
+   "fruit":{
+      "title":"水果",
+      "apple":"苹果",
+      "orange":"一个橙子"
+   },
+   "animals":{
+      "title":"动物",
+      "dog":"一只狗",
+      "cat":"一只猫"
+   }    
+}
+
+
+
+
