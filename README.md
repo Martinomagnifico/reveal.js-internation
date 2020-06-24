@@ -10,4 +10,4 @@ A few points:
 
 * You will need to make JSON files.
 * You may generate your first JSON file by setting the makejson option to true. This will immediately download a JSON file generated from the current HTML content, but you will still need to tag the texts with a data-attribute in advance.
-* Sections need ID's for this plugin to work, so you can always move your files.
+* Sections need ID's for this plugin to work, so you can always move your slides around later on.
