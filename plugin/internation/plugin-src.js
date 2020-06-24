@@ -17,23 +17,23 @@ const Plugin = () => {
 			request.send(null);
 		});
 
-	function downloadObjectAsJson(exportObj, exportName){
+	function downloadObjectAsJson(exportObj, exportName) {
 		var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
 		var downloadAnchorNode = document.createElement('a');
-		downloadAnchorNode.setAttribute("href",     dataStr);
+		downloadAnchorNode.setAttribute("href", dataStr);
 		downloadAnchorNode.setAttribute("download", exportName + ".json");
 		document.body.appendChild(downloadAnchorNode); // required for firefox
 		downloadAnchorNode.click();
 		downloadAnchorNode.remove();
 	}
 
-	const InterNation = function (deck, options) {
+	const InterNation = function(deck, options) {
 
-		const debugLog = function (text) {
+		const debugLog = function(text) {
 			if (options.debug) console.log(text);
 		}
 
-		const getTextContent = function () {
+		const getTextContent = function() {
 
 			let sections = deck.getRevealElement().querySelectorAll(`section`);
 			let JSON = false;
@@ -57,11 +57,11 @@ const Plugin = () => {
 				sections.forEach(section => {
 					if (section.id) {
 						let sectionid = section.id;
-	
+
 						newdict[sectionid] = {}
-	
+
 						let langattributes = section.querySelectorAll(options.langattribute);
-	
+
 						langattributes.forEach(element => {
 							let key = element.getAttribute(options.langattribute);
 							newdict[sectionid][key] = element.textContent;
@@ -77,7 +77,7 @@ const Plugin = () => {
 		}
 
 
-		const setText = function (pickLang) {
+		const setText = function(pickLang) {
 
 			let sections = deck.getRevealElement().querySelectorAll(`section`);
 
@@ -100,8 +100,7 @@ const Plugin = () => {
 								if (pickdict[sectionid][msg]) {
 									element.textContent = pickdict[sectionid][msg];
 								}
-							}
-							else if (origdict[sectionid]) {
+							} else if (origdict[sectionid]) {
 								if (origdict[sectionid][msg]) {
 									element.textContent = origdict[sectionid][msg];
 								}
@@ -113,7 +112,7 @@ const Plugin = () => {
 		}
 
 
-		const switchSetter = function (selects, value) {
+		const switchSetter = function(selects, value) {
 			selects.forEach(thisselect => {
 				thisselect.value = value;
 
@@ -124,7 +123,7 @@ const Plugin = () => {
 			});
 		}
 
-		const langSwitcher = function () {
+		const langSwitcher = function() {
 
 			let selects = deck.getRevealElement().querySelectorAll('.langchooser');
 
@@ -134,15 +133,15 @@ const Plugin = () => {
 				setText(langPref);
 			}
 
-            selects.forEach(thisselect => {
+			selects.forEach(thisselect => {
 
-                thisselect.addEventListener('change', function (event) {
-                    switchSetter(selects, event.target.value);
-                    setText(event.target.value);
-                    sessionStorage['InterNutshellSettingsStorage'] = event.target.value;
-                });
+				thisselect.addEventListener('change', function(event) {
+					switchSetter(selects, event.target.value);
+					setText(event.target.value);
+					sessionStorage['InterNutshellSettingsStorage'] = event.target.value;
+				});
 
-            });
+			});
 
 		}
 
@@ -151,10 +150,10 @@ const Plugin = () => {
 
 		let size = Object.keys(langs).length;
 		let counter = 0;
-				
+
 		if (langattributes.length > 0) {
 
-			Object.keys(langs).forEach(function (abbr) {
+			Object.keys(langs).forEach(function(abbr) {
 
 				readJson(langs[abbr].dictionary).then(res => {
 					if (res.srcElement.status != "200") {
@@ -174,21 +173,18 @@ const Plugin = () => {
 		} else {
 			debugLog(`There are no elements that have the data attribute of ${options.langattribute}`)
 		}
-
-
 	}
 
-	const init = function (deck) {
+	const init = function(deck) {
 
 		let defaultOptions = {
 			locale: "en",
-			select: "#chooser",
 			langattribute: "[data-i18n]",
 			debug: false,
 			makejson: false
 		};
 
-		const defaults = function (options, defaultOptions) {
+		const defaults = function(options, defaultOptions) {
 			for (let i in defaultOptions) {
 				if (!options.hasOwnProperty(i)) {
 					options[i] = defaultOptions[i];

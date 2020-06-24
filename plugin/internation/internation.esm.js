@@ -4,7 +4,7 @@
  * https://github.com/Martinomagnifico
  *
  * Internation.js for Reveal.js 
- * Version 1.0.0
+ * Version 1.0.1
  * 
  * @license 
  * MIT licensed
@@ -197,7 +197,6 @@ var Plugin = function Plugin() {
   var init = function init(deck) {
     var defaultOptions = {
       locale: "en",
-      select: "#chooser",
       langattribute: "[data-i18n]",
       debug: false,
       makejson: false
