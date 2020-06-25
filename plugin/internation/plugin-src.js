@@ -5,6 +5,21 @@ const Plugin = () => {
 		.filter( key => predicate(obj[key]) )
 		.reduce( (res, key) => (res[key] = obj[key], res), {} );
 		
+
+	var getParams = function (url) {
+		var params = {};
+		var parser = document.createElement('a');
+		parser.href = url;
+		var query = parser.search.substring(1);
+		var vars = query.split('&');
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			params[pair[0]] = decodeURIComponent(pair[1]);
+		}
+		return params;
+	};
+
+
 	const readJson = (file, options = {
 			method: 'get'
 		}) =>
@@ -38,7 +53,7 @@ const Plugin = () => {
 			if (options.debug) console.log(text);
 		}
 
-		const getTextContent = function() {
+		const getTextContent = function(deck, options) {
 
 			let sections = deck.getRevealElement().querySelectorAll(`section`);
 			let JSON = false;
@@ -78,10 +93,12 @@ const Plugin = () => {
 				langs[options.locale].dictionary = newdict;
 			}
 			if (options.makejson) {
-				downloadObjectAsJson(langs[options.locale].dictionary, `${options.locale}`)
+				let params = getParams(window.location.href);
+				if (params.makejson) {
+					downloadObjectAsJson(langs[options.locale].dictionary, `${options.locale}`)
+				}
 			}
 		}
-
 
 		const setText = function(pickLang) {
 
@@ -154,7 +171,18 @@ const Plugin = () => {
 		let langattributes = deck.getRevealElement().querySelectorAll(`[${options.langattribute}]`);
 		let langs = options.languages;
 
+		if (!langattributes) {
+			debugLog(`There are no elements that have the data attribute of ${options.langattribute}`)
+		}
+		if (Object.keys(langs).length === 0 && langs.constructor === Object) {
+			debugLog(`There are no languages defined.`);
+			Reveal.on( 'ready', event => {
+				getTextContent(deck, options);
+			});
 
+		}
+
+		
 		if (langattributes.length > 0) {
 
 			let size = Object.keys(langs).length;
@@ -167,7 +195,7 @@ const Plugin = () => {
 					counter++;
 
 					if (counter == size) {
-						getTextContent();
+						getTextContent(deck, options);
 						langSwitcher();
 					}
 				} else {
@@ -180,7 +208,7 @@ const Plugin = () => {
 						}
 
 						if (counter == size) {
-							getTextContent();
+							getTextContent(deck, options);
 							langSwitcher();
 						}
 					});
@@ -205,6 +233,7 @@ const Plugin = () => {
 			localename: 'English',
 			langattribute: "data-i18n",
 			switchselector: ".langchooser",
+			languages: {},
 			debug: false,
 			makejson: false
 		};

@@ -4,7 +4,7 @@
  * https://github.com/Martinomagnifico
  *
  * Internation.js for Reveal.js 
- * Version 1.0.2
+ * Version 1.0.3
  * 
  * @license 
  * MIT licensed
@@ -37,6 +37,21 @@ var Plugin = function Plugin() {
     }).reduce(function (res, key) {
       return res[key] = obj[key], res;
     }, {});
+  };
+
+  var getParams = function getParams(url) {
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = url;
+    var query = parser.search.substring(1);
+    var vars = query.split('&');
+
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+
+    return params;
   };
 
   var readJson = function readJson(file) {
@@ -76,7 +91,7 @@ var Plugin = function Plugin() {
       if (options.debug) console.log(text);
     };
 
-    var getTextContent = function getTextContent() {
+    var getTextContent = function getTextContent(deck, options) {
       var sections = deck.getRevealElement().querySelectorAll("section");
       var JSON = false;
 
@@ -114,7 +129,11 @@ var Plugin = function Plugin() {
       }
 
       if (options.makejson) {
-        downloadObjectAsJson(langs[options.locale].dictionary, "".concat(options.locale));
+        var params = getParams(window.location.href);
+
+        if (params.makejson) {
+          downloadObjectAsJson(langs[options.locale].dictionary, "".concat(options.locale));
+        }
       }
     };
 
@@ -179,6 +198,17 @@ var Plugin = function Plugin() {
     var langattributes = deck.getRevealElement().querySelectorAll("[".concat(options.langattribute, "]"));
     var langs = options.languages;
 
+    if (!langattributes) {
+      debugLog("There are no elements that have the data attribute of ".concat(options.langattribute));
+    }
+
+    if (Object.keys(langs).length === 0 && langs.constructor === Object) {
+      debugLog("There are no languages defined.");
+      Reveal.on('ready', function (event) {
+        getTextContent(deck, options);
+      });
+    }
+
     if (langattributes.length > 0) {
       var size = Object.keys(langs).length;
       var counter = 0;
@@ -187,7 +217,7 @@ var Plugin = function Plugin() {
           counter++;
 
           if (counter == size) {
-            getTextContent();
+            getTextContent(deck, options);
             langSwitcher();
           }
         } else {
@@ -199,7 +229,7 @@ var Plugin = function Plugin() {
             }
 
             if (counter == size) {
-              getTextContent();
+              getTextContent(deck, options);
               langSwitcher();
             }
           });
@@ -219,6 +249,7 @@ var Plugin = function Plugin() {
       localename: 'English',
       langattribute: "data-i18n",
       switchselector: ".langchooser",
+      languages: {},
       debug: false,
       makejson: false
     };

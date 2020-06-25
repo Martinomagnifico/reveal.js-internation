@@ -7,6 +7,11 @@
       "apple":"Ett äpple",
       "orange":"En apelsin"
    },
+   "diner":{
+      "title":"Middag",
+      "pizza":"En pizza",
+      "hamburger":"En hamburgare"
+   },
    "animals":{
       "title":"Djur",
       "dog":"En hund",

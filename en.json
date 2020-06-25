@@ -8,6 +8,11 @@
       "apple":"An apple",
       "orange":"An orange"
    },
+   "diner":{
+      "title":"Diner",
+      "pizza":"A pizza",
+      "hamburger":"A hamburger"
+   },
    "animals":{
       "title":"Animals",
       "dog":"A dog",

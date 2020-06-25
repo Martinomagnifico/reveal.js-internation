@@ -7,6 +7,11 @@
       "apple":"苹果",
       "orange":"一个橙子"
    },
+   "diner":{
+      "title":"晚餐",
+      "pizza":"一份披萨",
+      "hamburger":"一个汉堡"
+   },
    "animals":{
       "title":"动物",
       "dog":"一只狗",

@@ -7,8 +7,10 @@
       "apple":"Une pomme",
       "orange":"Une orange"
    },
-   "flags":{
-      "title":"Drapeaux"
+   "diner":{
+      "title":"Diner",
+      "pizza":"Une pizza",
+      "hamburger":"Un hamburger"
    },
    "animals":{
       "title":"Animaux",
