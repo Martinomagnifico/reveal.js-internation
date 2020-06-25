@@ -17,12 +17,27 @@
 <body>
     <div class="reveal">
         <div class="menubar">
-            <select class="langchooser" id="chooser">
-                <option value="en">English</option>
-                <option value="fr">Français</option>
-                <option value="se">Svenska</option>
-                <option value="cn">中文</option>
-            </select>
+            <div class="dropdown">
+                <input id="checkbox_toggle" type="checkbox">
+                <label for="checkbox_toggle">Choose language</label>
+                <div class="langchooser">
+                    <label>
+                        <input type="radio" name="menulangradios" value="en" checked><span>English</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="menulangradios" value="fr"><span>Français</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="menulangradios" value="se"><span>Svenska</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="menulangradios" value="cn"><span>中文</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="menulangradios" value="nl"><span>Nederlands</span>
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="slides">
             <section id="intro" data-state="hide-menubar">
@@ -41,6 +56,9 @@
                         </label>
                         <label>
                             <input type="radio" name="langradios" value="cn"><img src="img/cn.svg">
+                        </label>
+                        <label>
+                            <input type="radio" name="langradios" value="nl"><img src="img/fr.svg" style="transform: rotate(-90deg)">
                         </label>
                     </div>
                 </div>
@@ -69,13 +87,6 @@
             </section>
         </div>
     </div>
-    <script>
-        const element = document.querySelector('#chooser');
-        const choices = new Choices(element, {
-            searchEnabled: false,
-            itemSelectText: ''
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
     <script src="plugin/internation/internation.js"></script>
     <script>
@@ -85,10 +96,6 @@
                 locale: "en",
                 localename: "English",
                 languages: {
-                    en: {
-                        name: "English",
-                        dictionary: "en.json"
-                    },
                     fr: {
                         name: "Français",
                         dictionary: "fr.json"
@@ -100,6 +107,24 @@
                     cn: {
                         name: "中文",
                         dictionary: "cn.json"
+                    },
+                    nl: {
+                        name: "Nederlands",
+                        dictionary: {
+                            intro: {
+                                subtitle: "voor Reveal.js"
+                            },
+                            fruit: {
+                                title: "Vruchten",
+                                apple: "Een appel",
+                                orange: "Een sinaasappel"
+                            },
+                            animals: {
+                                title: "Dieren",
+                                dog: "Een hond",
+                                cat: "Een kat"
+                            }
+                        }
                     }
                 }
             },
@@ -107,6 +132,14 @@
                 Internation
             ]
         });
+    </script>
+    <!-- The script below closes the fake 'select' if an option is chosen;-->
+    <script>
+        let dropdown = document.querySelector('.menubar .langchooser');
+        let label = document.querySelector('.menubar .dropdown > label');
+        dropdown.addEventListener("click", function(e) {
+            label.click();
+        }, false);
     </script>
 </body>
 

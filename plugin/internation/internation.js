@@ -4,7 +4,7 @@
  * https://github.com/Martinomagnifico
  *
  * Internation.js for Reveal.js 
- * Version 1.0.1
+ * Version 1.0.2
  * 
  * @license 
  * MIT licensed
@@ -37,6 +37,14 @@
   }
 
   var Plugin = function Plugin() {
+    Object.filter = function (obj, predicate) {
+      return Object.keys(obj).filter(function (key) {
+        return predicate(obj[key]);
+      }).reduce(function (res, key) {
+        return res[key] = obj[key], res;
+      }, {});
+    };
+
     var readJson = function readJson(file) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
         method: 'get'
@@ -80,13 +88,14 @@
 
         if (langs[options.locale]) {
           if (_typeof(langs[options.locale].dictionary) == "object") {
-            debugLog("JSON file is OK and will overrule local textcontent");
+            debugLog("JSON file is OK and will overrule local textcontent.");
             JSON = true;
           } else {
-            debugLog("JSON file is linked but path is wrong");
+            debugLog("JSON file is linked but the path is wrong, will parse HTML text.");
             JSON = false;
           }
         } else {
+          debugLog("No JSON file for local language, will parse HTML text.");
           langs[options.locale] = {};
           JSON = false;
         }
@@ -94,11 +103,11 @@
         if (JSON == false) {
           var newdict = {};
           sections.forEach(function (section) {
-            if (section.id) {
+            if (section.id && !section.classList.contains("stack")) {
               var sectionid = section.id;
               newdict[sectionid] = {};
 
-              var _langattributes = section.querySelectorAll(options.langattribute);
+              var _langattributes = section.querySelectorAll("[".concat(options.langattribute, "]"));
 
               _langattributes.forEach(function (element) {
                 var key = element.getAttribute(options.langattribute);
@@ -120,14 +129,14 @@
         var pickdict = langs[pickLang].dictionary;
         var origdict = langs[options.locale].dictionary;
         sections.forEach(function (section) {
-          if (section.id) {
+          if (section.id && !section.classList.contains("stack")) {
             var sectionid = section.id;
 
-            var _langattributes2 = section.querySelectorAll(options.langattribute);
+            var _langattributes2 = section.querySelectorAll("[".concat(options.langattribute, "]"));
 
             _langattributes2.forEach(function (element) {
-              if (element.getAttribute('data-i18n')) {
-                var msg = element.getAttribute('data-i18n');
+              if (element.getAttribute(options.langattribute)) {
+                var msg = element.getAttribute(options.langattribute);
 
                 if (pickdict[sectionid]) {
                   if (pickdict[sectionid][msg]) {
@@ -156,10 +165,10 @@
       };
 
       var langSwitcher = function langSwitcher() {
-        var selects = deck.getRevealElement().querySelectorAll('.langchooser');
+        var selects = deck.getRevealElement().querySelectorAll(options.switchselector);
 
-        if (sessionStorage['InterNutshellSettingsStorage']) {
-          var langPref = sessionStorage['InterNutshellSettingsStorage'];
+        if (sessionStorage['InternationSettingsStorage']) {
+          var langPref = sessionStorage['InternationSettingsStorage'];
           switchSetter(selects, langPref);
           setText(langPref);
         }
@@ -168,33 +177,43 @@
           thisselect.addEventListener('change', function (event) {
             switchSetter(selects, event.target.value);
             setText(event.target.value);
-            sessionStorage['InterNutshellSettingsStorage'] = event.target.value;
+            sessionStorage['InternationSettingsStorage'] = event.target.value;
           });
         });
       };
 
-      var langattributes = deck.getRevealElement().querySelectorAll(options.langattribute);
+      var langattributes = deck.getRevealElement().querySelectorAll("[".concat(options.langattribute, "]"));
       var langs = options.languages;
-      var size = Object.keys(langs).length;
-      var counter = 0;
 
       if (langattributes.length > 0) {
+        var size = Object.keys(langs).length;
+        var counter = 0;
         Object.keys(langs).forEach(function (abbr) {
-          readJson(langs[abbr].dictionary).then(function (res) {
-            if (res.srcElement.status != "200") {
-              debugLog("The language file \"".concat(langs[abbr].name, "\" at \"").concat(langs[abbr].dictionary, "\" was not found"));
-            } else {
-              langs[abbr].dictionary = JSON.parse(res.srcElement.response);
-            }
-
+          if (_typeof(langs[abbr].dictionary) == "object") {
             counter++;
 
             if (counter == size) {
               getTextContent();
               langSwitcher();
             }
-          });
+          } else {
+            readJson(langs[abbr].dictionary).then(function (res) {
+              if (res.srcElement.status != "200") {
+                debugLog("The language file \"".concat(langs[abbr].name, "\" at \"").concat(langs[abbr].dictionary, "\" was not found"));
+              } else {
+                langs[abbr].dictionary = JSON.parse(res.srcElement.response);
+              }
+
+              if (counter == size) {
+                getTextContent();
+                langSwitcher();
+              }
+            });
+            counter++;
+          }
         });
+        debugLog("Loaded languages:");
+        debugLog(langs);
       } else {
         debugLog("There are no elements that have the data attribute of ".concat(options.langattribute));
       }
@@ -203,7 +222,9 @@
     var init = function init(deck) {
       var defaultOptions = {
         locale: "en",
-        langattribute: "[data-i18n]",
+        localename: 'English',
+        langattribute: "data-i18n",
+        switchselector: ".langchooser",
         debug: false,
         makejson: false
       };

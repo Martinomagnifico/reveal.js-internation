@@ -1,5 +1,10 @@
 const Plugin = () => {
 
+	Object.filter = (obj, predicate) => 
+	Object.keys(obj)
+		.filter( key => predicate(obj[key]) )
+		.reduce( (res, key) => (res[key] = obj[key], res), {} );
+		
 	const readJson = (file, options = {
 			method: 'get'
 		}) =>
@@ -40,13 +45,14 @@ const Plugin = () => {
 
 			if (langs[options.locale]) {
 				if (typeof langs[options.locale].dictionary == "object") {
-					debugLog("JSON file is OK and will overrule local textcontent");
+					debugLog("JSON file is OK and will overrule local textcontent.");
 					JSON = true;
 				} else {
-					debugLog("JSON file is linked but path is wrong");
+					debugLog("JSON file is linked but the path is wrong, will parse HTML text.");
 					JSON = false;
 				}
 			} else {
+				debugLog("No JSON file for local language, will parse HTML text.");
 				langs[options.locale] = {};
 				JSON = false;
 			}
@@ -55,12 +61,12 @@ const Plugin = () => {
 				let newdict = {};
 
 				sections.forEach(section => {
-					if (section.id) {
+					if (section.id && !section.classList.contains("stack")) {
 						let sectionid = section.id;
 
 						newdict[sectionid] = {}
 
-						let langattributes = section.querySelectorAll(options.langattribute);
+						let langattributes = section.querySelectorAll(`[${options.langattribute}]`);
 
 						langattributes.forEach(element => {
 							let key = element.getAttribute(options.langattribute);
@@ -85,16 +91,16 @@ const Plugin = () => {
 			let origdict = langs[options.locale].dictionary;
 
 			sections.forEach(section => {
-				if (section.id) {
+				if (section.id && !section.classList.contains("stack")) {
 					let sectionid = section.id;
 
-					let langattributes = section.querySelectorAll(options.langattribute);
+					let langattributes = section.querySelectorAll(`[${options.langattribute}]`);
 
 					langattributes.forEach(element => {
 
-						if (element.getAttribute('data-i18n')) {
+						if (element.getAttribute(options.langattribute)) {
 
-							let msg = element.getAttribute('data-i18n');
+							let msg = element.getAttribute(options.langattribute);
 
 							if (pickdict[sectionid]) {
 								if (pickdict[sectionid][msg]) {
@@ -125,10 +131,10 @@ const Plugin = () => {
 
 		const langSwitcher = function() {
 
-			let selects = deck.getRevealElement().querySelectorAll('.langchooser');
+			let selects = deck.getRevealElement().querySelectorAll(options.switchselector);
 
-			if (sessionStorage['InterNutshellSettingsStorage']) {
-				let langPref = sessionStorage['InterNutshellSettingsStorage'];
+			if (sessionStorage['InternationSettingsStorage']) {
+				let langPref = sessionStorage['InternationSettingsStorage'];
 				switchSetter(selects, langPref);
 				setText(langPref);
 			}
@@ -138,38 +144,55 @@ const Plugin = () => {
 				thisselect.addEventListener('change', function(event) {
 					switchSetter(selects, event.target.value);
 					setText(event.target.value);
-					sessionStorage['InterNutshellSettingsStorage'] = event.target.value;
+					sessionStorage['InternationSettingsStorage'] = event.target.value;
 				});
 
 			});
 
 		}
 
-		let langattributes = deck.getRevealElement().querySelectorAll(options.langattribute);
+		let langattributes = deck.getRevealElement().querySelectorAll(`[${options.langattribute}]`);
 		let langs = options.languages;
 
-		let size = Object.keys(langs).length;
-		let counter = 0;
 
 		if (langattributes.length > 0) {
 
+			let size = Object.keys(langs).length;
+			let counter = 0;
+
 			Object.keys(langs).forEach(function(abbr) {
 
-				readJson(langs[abbr].dictionary).then(res => {
-					if (res.srcElement.status != "200") {
-						debugLog(`The language file "${langs[abbr].name}" at "${langs[abbr].dictionary}" was not found`);
-					} else {
-						langs[abbr].dictionary = JSON.parse(res.srcElement.response);
-					}
+				if (typeof langs[abbr].dictionary == "object") {
+
 					counter++;
 
 					if (counter == size) {
 						getTextContent();
 						langSwitcher();
 					}
+				} else {
 
-				});
+					readJson(langs[abbr].dictionary).then(res => {
+						if (res.srcElement.status != "200") {
+							debugLog(`The language file "${langs[abbr].name}" at "${langs[abbr].dictionary}" was not found`);
+						} else {
+							langs[abbr].dictionary = JSON.parse(res.srcElement.response);
+						}
+
+						if (counter == size) {
+							getTextContent();
+							langSwitcher();
+						}
+					});
+
+					counter++;
+
+				}
 			});
+
+			debugLog("Loaded languages:");
+			debugLog(langs);
+
 		} else {
 			debugLog(`There are no elements that have the data attribute of ${options.langattribute}`)
 		}
@@ -179,7 +202,9 @@ const Plugin = () => {
 
 		let defaultOptions = {
 			locale: "en",
-			langattribute: "[data-i18n]",
+			localename: 'English',
+			langattribute: "data-i18n",
+			switchselector: ".langchooser",
 			debug: false,
 			makejson: false
 		};
