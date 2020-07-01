@@ -110,7 +110,7 @@
                 </section>
                 <section>
                     <h3>Step 1. Define current language</h3>
-                    <p>Internation has English as default language. You can change it if you like in the options:</p>
+                    <p class="small">Internation has English as default language. You can change it if you like in the options:</p>
                     <pre><code>Reveal.initialize({
     //
     internation: {
@@ -128,12 +128,12 @@
     &lt;p data-i18n=&quot;paragraph1&quot;&gt;There is a &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt; in the paragraph&lt;/p&gt;
 &lt;/section&gt;
 </code></pre>
-                    <p class="small">Start with tagging the text that you want to translate, by adding a data-attribute of <code>data-i18n="something"</code> to them.</p>
-                    <p class="small">Internation reads the HTML content of the elements, so if a piece of text contains a span or link, it is better to take that whole piece for translation. If you turn the HTML setting off in the options (you can), you would need to make spans of every text that is not a link.</p>
+                    <p class="small">Add a data-attribute of <code>data-i18n="something"</code> to the text you want to translate. Skip elements that are common in all languages.</p>
+                    <p class="small">Internation reads HTML by default. If some text contains a span or link, it is better to take that whole piece for translation. If you turn the HTML setting off in the options (you can), you would need to make spans of every text that is not a link.</p>
                 </section>
                 <section>
                     <h3>Step 3. Creating JSON</h3>
-                    <p class="small">Internation can automatically generate a JSON file for you based on the existing HTML content of the elements. Make sure you have added the data-attributes. First turn it on in the options:</p>
+                    <p class="small">Internation can automatically generate a JSON file for you based on the existing HTML content of the elements. First turn it on in the options (make sure you have added data-attributes in step 2):</p>
                     <pre><code>Reveal.initialize({
     //
     internation: {
@@ -145,7 +145,8 @@
                 </section>
                 <section>
                     <h3>Step 4. Start translating</h3>
-                    <p class="small">Make a copy of your first language JSON. Give the file a name that is obvious (so, fr.json for French). Now start translating! When you are finished, put the file in an obvious location on your website.</p>
+                    <p class="small">Make a copy of your first language JSON. Give the file a name that is obvious (so, fr.json for French). Now start translating! When you are finished, but the file in an obvious location on your website.</p>
+                    <p class="small">Note: If an element has the data-attribute, but is missing in the dictionary of your new language, it will stay in the original language.</p>
                 </section>
                 <section>
                     <h3>Step 5A. Refer to a language file</h3>
