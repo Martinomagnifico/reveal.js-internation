@@ -1,6 +1,6 @@
 # Internation
 
-A simple plugin for [Reveal.js](https://revealjs.com) 4, that can let the user choose a language for the presentation.
+A plugin for [Reveal.js](https://revealjs.com) 4, that can let the user choose a language for the presentation. The user can create a first language file and start translating.
 
 [![Screenshot](screenshot.png)](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
 
