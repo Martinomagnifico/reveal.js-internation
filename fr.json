@@ -1,21 +1,33 @@
 {
-   "intro":{
-      "subtitle":"pour Reveal.js"
+   "slides": {
+      "examples":{
+         "title":"Exemples"
+      },
+      "intro":{
+         "subtitle":"pour Reveal.js"
+      },
+      "fruit":{
+         "title":"Fruits",
+         "apple":"Une pomme",
+         "orange":"Une orange"
+      },
+      "diner":{
+         "title":"Diner",
+         "pizza":"Une pizza",
+         "hamburger":"Un hamburger"
+      },
+      "animals":{
+         "title":"Animaux",
+         "dog":"Un chien",
+         "cat":"Un chat"
+      },
+      "html":{
+         "title":" Contenu HTML",
+         "paragraph":"Ceci est un paragraphe.",
+         "htmlparagraph":"Ceci est un paragraphe contenant du <a href=\"#\">HTML</a>."
+      }
    },
-   "fruit":{
-      "title":"Fruits",
-      "apple":"Une pomme",
-      "orange":"Une orange"
-   },
-   "diner":{
-      "title":"Diner",
-      "pizza":"Une pizza",
-      "hamburger":"Un hamburger"
-   },
-   "animals":{
-      "title":"Animaux",
-      "dog":"Un chien",
-      "cat":"Un chat"
+   "menubar": {
+       "chooselanguage": "Choisissez la langue"
    }
 }
-

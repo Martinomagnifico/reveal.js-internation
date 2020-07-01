@@ -4,7 +4,7 @@
  * https://github.com/Martinomagnifico
  *
  * Internation.js for Reveal.js 
- * Version 1.0.3
+ * Version 1.0.4
  * 
  * @license 
  * MIT licensed
@@ -82,7 +82,10 @@
     };
 
     function downloadObjectAsJson(exportObj, exportName) {
-      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+      var myjson = JSON.stringify(exportObj);
+      myjson = myjson.replace(/\\n/g, '').replace(/"\s+|\s+"/g, '"');
+      myjson = JSON.stringify(JSON.parse(myjson), null, 4);
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(myjson);
       var downloadAnchorNode = document.createElement('a');
       downloadAnchorNode.setAttribute("href", dataStr);
       downloadAnchorNode.setAttribute("download", exportName + ".json");
@@ -92,13 +95,45 @@
       downloadAnchorNode.remove();
     }
 
+    var escapeJSON = function escapeJSON(str) {
+      return str.replace(/\\/g, '\\');
+    };
+
     var InterNation = function InterNation(deck, options) {
+      var revealEl = deck.getRevealElement();
+
       var debugLog = function debugLog(text) {
         if (options.debug) console.log(text);
       };
 
+      var attributeLooper = function attributeLooper(langattributes, pickdict, origdict, sectionid) {
+        langattributes.forEach(function (element) {
+          if (element.getAttribute(options.langattribute)) {
+            var msg = element.getAttribute(options.langattribute);
+
+            if (pickdict[sectionid]) {
+              if (pickdict[sectionid][msg]) {
+                if (options.html) {
+                  element.innerHTML = pickdict[sectionid][msg];
+                } else {
+                  element.textContent = pickdict[sectionid][msg];
+                }
+              }
+            } else if (origdict[sectionid]) {
+              if (origdict[sectionid][msg]) {
+                if (options.html) {
+                  element.innerHTML = origdict[sectionid][msg];
+                } else {
+                  element.textContent = origdict[sectionid][msg];
+                }
+              }
+            }
+          }
+        });
+      };
+
       var getTextContent = function getTextContent(deck, options) {
-        var sections = deck.getRevealElement().querySelectorAll("section");
+        var sections = revealEl.querySelectorAll("section");
         var JSON = false;
 
         if (langs[options.locale]) {
@@ -117,16 +152,26 @@
 
         if (JSON == false) {
           var newdict = {};
+          newdict.slides = {};
+          var idDivs = revealEl.querySelectorAll(":scope > [id]");
+          idDivs.forEach(function (idDiv) {
+            newdict[idDiv.id] = {};
+            var langattributes = idDiv.querySelectorAll("[".concat(options.langattribute, "]"));
+            langattributes.forEach(function (element) {
+              var key = element.getAttribute(options.langattribute);
+              newdict[idDiv.id][key] = options.html ? escapeJSON(element.innerHTML) : element.textContent;
+            });
+          });
           sections.forEach(function (section) {
             if (section.id && !section.classList.contains("stack")) {
               var sectionid = section.id;
-              newdict[sectionid] = {};
+              newdict.slides[sectionid] = {};
 
               var _langattributes = section.querySelectorAll("[".concat(options.langattribute, "]"));
 
               _langattributes.forEach(function (element) {
                 var key = element.getAttribute(options.langattribute);
-                newdict[sectionid][key] = element.textContent;
+                newdict.slides[sectionid][key] = options.html ? escapeJSON(element.innerHTML) : element.textContent;
               });
             }
           });
@@ -144,37 +189,35 @@
       };
 
       var setText = function setText(pickLang) {
-        var sections = deck.getRevealElement().querySelectorAll("section");
         var pickdict = langs[pickLang].dictionary;
-        var origdict = langs[options.locale].dictionary;
-        sections.forEach(function (section) {
-          if (section.id && !section.classList.contains("stack")) {
-            var sectionid = section.id;
+        var origdict = langs[options.locale].dictionary; // Set language for elements outside 'slides'
 
-            var _langattributes2 = section.querySelectorAll("[".concat(options.langattribute, "]"));
+        var idDivs = revealEl.querySelectorAll(":scope > [id]:not(.slides)");
+        idDivs.forEach(function (idDiv) {
+          var divid = idDiv.id;
+          var langattributes = idDiv.querySelectorAll("[".concat(options.langattribute, "]"));
+          attributeLooper(langattributes, pickdict, origdict, divid);
+        }); // Set language for elements inside 'slides'
 
-            _langattributes2.forEach(function (element) {
-              if (element.getAttribute(options.langattribute)) {
-                var msg = element.getAttribute(options.langattribute);
+        if (pickdict.slides) {
+          var sections = revealEl.querySelectorAll("section[id]");
+          pickdict = pickdict.slides;
+          sections.forEach(function (section) {
+            if (!section.classList.contains("stack")) {
+              var sectionid = section.id;
 
-                if (pickdict[sectionid]) {
-                  if (pickdict[sectionid][msg]) {
-                    element.textContent = pickdict[sectionid][msg];
-                  }
-                } else if (origdict[sectionid]) {
-                  if (origdict[sectionid][msg]) {
-                    element.textContent = origdict[sectionid][msg];
-                  }
-                }
-              }
-            });
-          }
-        });
+              var _langattributes2 = section.querySelectorAll("[".concat(options.langattribute, "]"));
+
+              attributeLooper(_langattributes2, pickdict, origdict, sectionid);
+            }
+          });
+        }
       };
 
       var switchSetter = function switchSetter(selects, value) {
         selects.forEach(function (thisselect) {
           thisselect.value = value;
+          document.documentElement.setAttribute('lang', value);
           var radio = thisselect.querySelector("input[value='".concat(value, "']"));
 
           if (radio) {
@@ -255,6 +298,7 @@
         localename: 'English',
         langattribute: "data-i18n",
         switchselector: ".langchooser",
+        html: true,
         languages: {},
         debug: false,
         makejson: false

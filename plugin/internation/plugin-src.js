@@ -37,8 +37,13 @@ const Plugin = () => {
 			request.send(null);
 		});
 
+		
+
 	function downloadObjectAsJson(exportObj, exportName) {
-		var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+		let myjson = JSON.stringify(exportObj);
+		myjson = myjson.replace(/\\n/g, '').replace(/"\s+|\s+"/g,'"');
+		myjson = JSON.stringify((JSON.parse(myjson)), null, 4);
+		let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(myjson); 
 		var downloadAnchorNode = document.createElement('a');
 		downloadAnchorNode.setAttribute("href", dataStr);
 		downloadAnchorNode.setAttribute("download", exportName + ".json");
@@ -47,15 +52,55 @@ const Plugin = () => {
 		downloadAnchorNode.remove();
 	}
 
+	var escapeJSON = function(str) {
+		return str.replace(/\\/g,'\\');
+	};
+
 	const InterNation = function(deck, options) {
+
+		let revealEl = deck.getRevealElement();
 
 		const debugLog = function(text) {
 			if (options.debug) console.log(text);
 		}
 
+		const attributeLooper = function(langattributes, pickdict, origdict, sectionid) {
+	
+			langattributes.forEach(element => {
+	
+				if (element.getAttribute(options.langattribute)) {
+
+					let msg = element.getAttribute(options.langattribute);
+
+					if (pickdict[sectionid]) {
+
+						if (pickdict[sectionid][msg]) {
+							if (options.html) {
+								element.innerHTML = pickdict[sectionid][msg];
+							} else {
+								element.textContent = pickdict[sectionid][msg];
+							}
+
+						}
+					} else if (origdict[sectionid]) {
+						if (origdict[sectionid][msg]) {
+							if (options.html) {
+								element.innerHTML = origdict[sectionid][msg];
+							} else {
+								element.textContent = origdict[sectionid][msg];
+							}
+						}
+					}
+				}
+
+			});
+			
+		}
+
 		const getTextContent = function(deck, options) {
 
-			let sections = deck.getRevealElement().querySelectorAll(`section`);
+
+			let sections = revealEl.querySelectorAll(`section`);
 			let JSON = false;
 
 			if (langs[options.locale]) {
@@ -74,18 +119,31 @@ const Plugin = () => {
 
 			if (JSON == false) {
 				let newdict = {};
+				newdict.slides = {};
+
+				let idDivs = revealEl.querySelectorAll(":scope > [id]");
+
+				idDivs.forEach(idDiv => {
+					newdict[idDiv.id] = {}
+					let langattributes = idDiv.querySelectorAll(`[${options.langattribute}]`);
+
+					langattributes.forEach(element => {
+						let key = element.getAttribute(options.langattribute);
+						newdict[idDiv.id][key] = options.html ? escapeJSON(element.innerHTML) : element.textContent;
+					});
+				});
 
 				sections.forEach(section => {
 					if (section.id && !section.classList.contains("stack")) {
 						let sectionid = section.id;
 
-						newdict[sectionid] = {}
+						newdict.slides[sectionid] = {}
 
 						let langattributes = section.querySelectorAll(`[${options.langattribute}]`);
 
 						langattributes.forEach(element => {
 							let key = element.getAttribute(options.langattribute);
-							newdict[sectionid][key] = element.textContent;
+							newdict.slides[sectionid][key] = options.html ? escapeJSON(element.innerHTML) : element.textContent;
 						});
 					}
 				});
@@ -102,43 +160,36 @@ const Plugin = () => {
 
 		const setText = function(pickLang) {
 
-			let sections = deck.getRevealElement().querySelectorAll(`section`);
-
 			let pickdict = langs[pickLang].dictionary;
 			let origdict = langs[options.locale].dictionary;
 
-			sections.forEach(section => {
-				if (section.id && !section.classList.contains("stack")) {
-					let sectionid = section.id;
+			// Set language for elements outside 'slides'
+			let idDivs = revealEl.querySelectorAll(":scope > [id]:not(.slides)");
+			idDivs.forEach(idDiv => {
+				let divid = idDiv.id;
+				let langattributes = idDiv.querySelectorAll(`[${options.langattribute}]`);
+				attributeLooper(langattributes, pickdict, origdict, divid);
 
-					let langattributes = section.querySelectorAll(`[${options.langattribute}]`);
-
-					langattributes.forEach(element => {
-
-						if (element.getAttribute(options.langattribute)) {
-
-							let msg = element.getAttribute(options.langattribute);
-
-							if (pickdict[sectionid]) {
-								if (pickdict[sectionid][msg]) {
-									element.textContent = pickdict[sectionid][msg];
-								}
-							} else if (origdict[sectionid]) {
-								if (origdict[sectionid][msg]) {
-									element.textContent = origdict[sectionid][msg];
-								}
-							}
-						}
-					});
-				}
 			});
-		}
 
+			// Set language for elements inside 'slides'
+			if (pickdict.slides) {
+				let sections = revealEl.querySelectorAll(`section[id]`);
+				pickdict = pickdict.slides;
+				sections.forEach(section => {
+					if (!section.classList.contains("stack")) {
+						let sectionid = section.id;
+						let langattributes = section.querySelectorAll(`[${options.langattribute}]`);
+						attributeLooper(langattributes, pickdict, origdict, sectionid);
+					}
+				});
+			}
+		}
 
 		const switchSetter = function(selects, value) {
 			selects.forEach(thisselect => {
 				thisselect.value = value;
-
+				document.documentElement.setAttribute('lang', value);
 				let radio = thisselect.querySelector(`input[value='${value}']`);
 				if (radio) {
 					radio.checked = true;
@@ -198,6 +249,7 @@ const Plugin = () => {
 						getTextContent(deck, options);
 						langSwitcher();
 					}
+
 				} else {
 
 					readJson(langs[abbr].dictionary).then(res => {
@@ -233,6 +285,7 @@ const Plugin = () => {
 			localename: 'English',
 			langattribute: "data-i18n",
 			switchselector: ".langchooser",
+			html: true,
 			languages: {},
 			debug: false,
 			makejson: false

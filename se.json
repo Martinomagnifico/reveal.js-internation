@@ -1,20 +1,33 @@
 {
-   "intro":{
-      "subtitle":"för Reveal.js"
+   "slides": {
+      "examples":{
+         "title":"Exempel"
+      },
+      "intro":{
+         "subtitle":"för Reveal.js"
+      },
+      "fruit":{
+         "title":"Frukt",
+         "apple":"Ett äpple",
+         "orange":"En apelsin"
+      },
+      "diner":{
+         "title":"Middag",
+         "pizza":"En pizza",
+         "hamburger":"En hamburgare"
+      },
+      "animals":{
+         "title":"Djur",
+         "dog":"En hund",
+         "cat":"En katt"
+      },
+       "html": {
+           "title": "HTML-innehåll",
+           "paragraph": "Detta är ett stycke.",
+           "htmlparagraph": "Detta är ett stycke som innehåller <a href=\"#\">HTML</a>."
+       } 
    },
-   "fruit":{
-      "title":"Frukt",
-      "apple":"Ett äpple",
-      "orange":"En apelsin"
-   },
-   "diner":{
-      "title":"Middag",
-      "pizza":"En pizza",
-      "hamburger":"En hamburgare"
-   },
-   "animals":{
-      "title":"Djur",
-      "dog":"En hund",
-      "cat":"En katt"
-   } 
+   "menubar": {
+       "chooselanguage": "Välj språk"
+   }
 }

@@ -1,24 +1,33 @@
 {
-   "intro":{
-      "subtitle":"为Reveal.js"
+   "slides": {
+      "examples":{
+         "title":"例子"
+      },
+      "intro":{
+         "subtitle":"为Reveal.js"
+      },
+      "fruit":{
+         "title":"水果",
+         "apple":"苹果",
+         "orange":"一个橙子"
+      },
+      "diner":{
+         "title":"晚餐",
+         "pizza":"一份披萨",
+         "hamburger":"一个汉堡"
+      },
+      "animals":{
+         "title":"动物",
+         "dog":"一只狗",
+         "cat":"一只猫"
+      },
+      "html": {
+         "title": "HTML内容",
+         "paragraph": "这是一段。",
+         "htmlparagraph": "这是一个包含<a href=\"#\">HTML</a>的段落。"
+      }   
    },
-   "fruit":{
-      "title":"水果",
-      "apple":"苹果",
-      "orange":"一个橙子"
-   },
-   "diner":{
-      "title":"晚餐",
-      "pizza":"一份披萨",
-      "hamburger":"一个汉堡"
-   },
-   "animals":{
-      "title":"动物",
-      "dog":"一只狗",
-      "cat":"一只猫"
-   }    
+   "menubar": {
+       "chooselanguage": "变更语言"
+   }
 }
-
-
-
-

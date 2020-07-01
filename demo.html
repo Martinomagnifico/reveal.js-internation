@@ -16,10 +16,10 @@
 
 <body>
     <div class="reveal">
-        <div class="menubar">
+        <div class="menubar" id="menubar">
             <div class="dropdown">
                 <input id="checkbox_toggle" type="checkbox">
-                <label for="checkbox_toggle">Choose language</label>
+                <label for="checkbox_toggle" data-i18n="chooselanguage">Choose language</label>
                 <div class="langchooser">
                     <label>
                         <input type="radio" name="menulangradios" value="en" checked><span>English</span>
@@ -41,29 +41,30 @@
         </div>
         <div class="slides">
             <section id="intro" data-state="hide-menubar">
-                <div>
-                    <h1 class="lowercase" data-i18n="title">Internation</h1>
-                    <h3 data-i18n="subtitle">for Reveal.js</h3>
-                    <div class="langchooser flags">
-                        <label>
-                            <input type="radio" name="langradios" value="en" checked><img src="img/en.svg">
-                        </label>
-                        <label>
-                            <input type="radio" name="langradios" value="fr"><img src="img/fr.svg">
-                        </label>
-                        <label>
-                            <input type="radio" name="langradios" value="se"><img src="img/se.svg">
-                        </label>
-                        <label>
-                            <input type="radio" name="langradios" value="cn"><img src="img/cn.svg">
-                        </label>
-                        <label>
-                            <input type="radio" name="langradios" value="nl"><img src="img/fr.svg" style="transform: rotate(-90deg)">
-                        </label>
-                    </div>
+                <h1 class="lowercase" data-i18n="title">Internation</h1>
+                <h3 data-i18n="subtitle">for Reveal.js</h3>
+                <div class="langchooser flags">
+                    <label>
+                        <input type="radio" name="langradios" value="en" checked><img src="img/en.png">
+                    </label>
+                    <label>
+                        <input type="radio" name="langradios" value="fr"><img src="img/fr.png">
+                    </label>
+                    <label>
+                        <input type="radio" name="langradios" value="se"><img src="img/se.png">
+                    </label>
+                    <label>
+                        <input type="radio" name="langradios" value="cn"><img src="img/cn.png">
+                    </label>
+                    <label>
+                        <input type="radio" name="langradios" value="nl"><img src="img/fr.png" style="transform: rotate(-90deg)">
+                    </label>
                 </div>
             </section>
-            <section id="food">
+            <section>
+                <section id="examples">
+                    <h2 data-i18n="title">Examples</h2>
+                </section>
                 <section id="fruit">
                     <h3 data-i18n="title">Fruit</h3>
                     <div class="row">
@@ -86,17 +87,130 @@
                         </div>
                     </div>
                 </section>
+                <section id="animals">
+                    <h3 data-i18n="title">Animals</h3>
+                    <div class="row">
+                        <div class="col"><img src="img/dog.png">
+                            <p data-i18n="dog">A dog</p>
+                        </div>
+                        <div class="col"><img src="img/cat.png">
+                            <p data-i18n="cat">A cat</p>
+                        </div>
+                    </div>
+                </section>
+                <section id="html">
+                    <h3 data-i18n="title">HTML Content</h3>
+                    <p data-i18n="paragraph">This is a normal paragraph with text.</p>
+                    <p data-i18n="htmlparagraph">This is a paragraph that has <a href="#">HTML</a> in it.</p>
+                </section>
             </section>
-            <section id="animals">
-                <h3 data-i18n="title">Animals</h3>
-                <div class="row">
-                    <div class="col"><img src="img/dog.png">
-                        <p data-i18n="dog">A dog</p>
-                    </div>
-                    <div class="col"><img src="img/cat.png">
-                        <p data-i18n="cat">A cat</p>
-                    </div>
-                </div>
+            <section data-state="hide-menubar">
+                <section>
+                    <h2>Setup</h2>
+                </section>
+                <section>
+                    <h3>Step 1. Define current language</h3>
+                    <p>Internation has English as default language. You can change it if you like in the options:</p>
+                    <pre><code>Reveal.initialize({
+    //
+    internation: {
+        locale: "en",
+        localename: 'English'
+    },
+    plugins: [ Internation ]
+});
+</code></pre>
+                </section>
+                <section>
+                    <h3>Step 2. Adding data-attributes</h3>
+                    <pre><code>&lt;section id=&quot;intro&quot;&gt;
+    &lt;h1 data-i18n=&quot;title&quot;&gt;Hello!&lt;/h1&gt;
+    &lt;p data-i18n=&quot;paragraph1&quot;&gt;There is a &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt; in the paragraph&lt;/p&gt;
+&lt;/section&gt;
+</code></pre>
+                    <p class="small">Start with tagging the text that you want to translate, by adding a data-attribute of <code>data-i18n="something"</code> to them.</p>
+                    <p class="small">Internation reads the HTML content of the elements, so if a piece of text contains a span or link, it is better to take that whole piece for translation. If you turn the HTML setting off in the options (you can), you would need to make spans of every text that is not a link.</p>
+                </section>
+                <section>
+                    <h3>Step 3. Creating JSON</h3>
+                    <p class="small">Internation can automatically generate a JSON file for you based on the existing HTML content of the elements. First turn it on in the options:</p>
+                    <pre><code>Reveal.initialize({
+    //
+    internation: {
+        makejson: true
+    },
+    plugins: [ Internation ]
+});</code></pre>
+                    <p class="small">Next, load the page with this URL parameter: <code>...index.html?makejson</code>. This will immediately download a JSON file of your current HTML. The URL step is a safeguard for if you accidentally publish with <code>makejson:true</code> in the options turned on.</p>
+                </section>
+                <section>
+                    <h3>Step 4. Start translating</h3>
+                    <p class="small">Make a copy of your first language JSON. Give the file a name that is obvious (so, fr.json for French). Now start translating! When you are finished, but the file in an obvious location on your website.</p>
+                </section>
+                <section>
+                    <h3>Step 5A. Refer to a language file</h3>
+                    <pre><code>Reveal.initialize({
+    //
+    internation: {
+        languages: {
+            fr: {
+                name: "Français",
+                dictionary: "fr.json"
+            }
+        }
+    },
+    plugins: [ Internation ]
+});
+</code></pre>
+                    <p class="small">A language in Internation contains both a name and a dictionary. This example shows that a JSON file is used for the dictionary. JSON files will only work if there is a server. It will not work with the file:// protocol.</p>
+                </section>
+                <section>
+                    <h3>Step 5B. Or a language object</h3>
+                    <pre><code>Reveal.initialize({
+    //
+    internation: {
+        languages: {
+            fr: {
+                name: "Français",
+                dictionary: {
+                    "slides" : {
+                        "intro":{"title":"Bonjour!"}
+                    }
+                }
+            }
+        }
+    },
+    plugins: [ Internation ]
+});
+</code></pre>
+                    <p class="small">If you really want to allow local file access, you can put the whole dictionary object in the specific language object in your options.</p>
+                </section>
+                <section>
+                    <h3>The dictionary / JSON</h3>
+                    <pre><code>{
+    "slides" : {
+        "intro":{
+            "title":"Bonjour!",
+            "paragraph1":"Ceci est un paragraphe"
+        },
+        "animals":{
+            "title":"Animaux",
+            "dog":"Chien",
+            "cat":"Chat",
+        }
+    },
+    "menubar" : {
+        "title":"Voici le titre",
+    }
+}
+</code></pre>
+                    <p class="small">To get a human-readable structure, Internation looks for a 'slides' object for any sections with ID's. It will also look for any elements with an ID that are outside of the slides, like a menu bar that is visible on all slides.</p>
+                </section>
+                <section>
+                    <h3>Switching languages</h3>
+                    <p class="small">If you want multiple languages, you will probably also want users to choose. Internation listens to 'change' events of either a select or a set of radio buttons. By default, this is any element with the class <code>langchooser</code>, but that classname can be changed in the options.</p>
+                    <p class="small">You can put these on a slide (like the first page with the flags) or outside them in an element that is visible on multiple slides (like the menubar in the examples).</p>
+                </section>
             </section>
         </div>
     </div>
@@ -105,10 +219,8 @@
     <script>
         Reveal.initialize({
             transition: "convex",
+            history: true,
             internation: {
-                locale: "en",
-                localename: "English",
-                langattribute: "data-i18n",
                 switchselector: ".langchooser",
                 languages: {
                     fr: {
@@ -126,23 +238,36 @@
                     nl: {
                         name: "Nederlands",
                         dictionary: {
-                            intro: {
-                                subtitle: "voor Reveal.js"
+                            menubar: {
+                                chooselanguage: "Kies een taal"
                             },
-                            fruit: {
-                                title: "Vruchten",
-                                apple: "Een appel",
-                                orange: "Een sinaasappel"
-                            },
-                            diner: {
-                                title: "Diner",
-                                pizza: "Een pizza",
-                                hamburger: "Een hamburger"
-                            },
-                            animals: {
-                                title: "Dieren",
-                                dog: "Een hond",
-                                cat: "Een kat"
+                            slides: {
+                                examples: {
+                                    title: "Voorbeelden"
+                                },
+                                intro: {
+                                    subtitle: "voor Reveal.js"
+                                },
+                                fruit: {
+                                    title: "Vruchten",
+                                    apple: "Een appel",
+                                    orange: "Een sinaasappel"
+                                },
+                                diner: {
+                                    title: "Diner",
+                                    pizza: "Een pizza",
+                                    hamburger: "Een hamburger"
+                                },
+                                animals: {
+                                    title: "Dieren",
+                                    dog: "Een hond",
+                                    cat: "Een kat"
+                                },
+                                html: {
+                                    title: "HTML Inhoud",
+                                    paragraph: "Dit is een paragraaf.",
+                                    htmlparagraph: "Dit is een paragraaf die <a href=\"#\">HTML</a> bevat."
+                                }
                             }
                         }
                     }
