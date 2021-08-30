@@ -1,6 +1,6 @@
 # Internation
 
-[![Version](https://img.shields.io/npm/v/reveal.js-internation)](#) [![Version](https://img.shields.io/npms-io/maintenance-score/reveal.js-internation)](#) [![Downloads](https://img.shields.io/npm/dt/reveal.js-internation)](https://github.com/Martinomagnifico/reveal.js-internation/archive/refs/heads/master.zip)
+[![Version](https://img.shields.io/npm/v/reveal.js-internation)](#) [![Downloads](https://img.shields.io/npm/dt/reveal.js-internation)](https://github.com/Martinomagnifico/reveal.js-internation/archive/refs/heads/master.zip)
 
 A plugin for [Reveal.js](https://revealjs.com) 4, that can let the end user choose a language for the presentation. Creating additional languages is made easy by letting you tag elements that should be translated. Running the presentation in 'makejson'-mode will generate a full JSON file of the whole current presentation. You can then start translating this file into other languages.
 
