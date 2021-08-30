@@ -128,6 +128,6 @@ Reveal.initialize({
 
 If you want multiple languages, you will probably also want users to choose. Internation listens to 'change' events of either a select or a set of radio buttons inside the presentation. By default, this is any element with the class `langchooser`, but that classname can be changed in the options.
 
-You can put these on a slide (like the first page with the flags) or outside them in an element that is visible on multiple slides (like the menubar in the examples).
+You can put these on a slide (like the first page of the demo with the flags) or outside them in an element that is visible on multiple slides (like the menubar in the examples). 
 
 The demo has a fake select in the menubar that works with radio buttons. You can pick and style your own way of switching.
