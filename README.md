@@ -17,7 +17,7 @@ Reveal.initialize({
     //
     internation: {
         locale: "en",
-        localename: 'English'
+        localename: "English"
     },
     plugins: [ Internation ]
 });
