@@ -14,7 +14,7 @@ You should probably actually know these other languages (or someone who does) to
 Internation has English as default language. You can change it if you like in the options:
 
 
-```
+```javascript
 Reveal.initialize({
     //
     internation: {
@@ -31,7 +31,7 @@ Give your slides (the ones in which you want to translate texts) specific ID's. 
 
 Add a data-attribute of data-i18n="something" to the text you want to translate. You can skip elements that are common in all languages.
 
-```
+```html
 <section id="intro">
     <h1 data-i18n="title">Hello!</h1>
     <p data-i18n="paragraph1">There is a <a href="#">link</a> in the paragraph</p>
@@ -44,7 +44,7 @@ Internation reads HTML by default. If some text contains a span or link, it is b
 
 After having added your data-attributes in step 2, you can now turn on the 'makejson'-mode in the Internation options:  
 
-```
+```javascript
 Reveal.initialize({
     //
     internation: {
@@ -59,7 +59,7 @@ Next, **load the page with this URL parameter: ...index.html?makejson**. This wi
 
 Here's an example of an English language file. This example has a menubar that is visible on all slides: 
 
-```
+```javascript
 {
     "slides" : {
         "intro":{
@@ -87,7 +87,7 @@ Make a copy of your first generated JSON. Give the file a name that is obvious (
 
 A language in Internation contains both a name and a dictionary. This example shows that a JSON file is used for the dictionary. JSON files will only work if there is a server. It will not work with the file:// protocol.
 
-```
+```javascript
 Reveal.initialize({
     //
     internation: {
@@ -106,7 +106,7 @@ Reveal.initialize({
 
 If you *really* want to allow local file access, you can put the whole dictionary object in the specific language object in your options:
 
-```
+```javascript
 Reveal.initialize({
     //
     internation: {
