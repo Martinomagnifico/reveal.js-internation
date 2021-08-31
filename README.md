@@ -9,9 +9,6 @@ You should probably actually know these other languages (or someone who does) to
 [![Screenshot](https://martinomagnifico.github.io/reveal.js-internation/screenshot.png)](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
 
 
-
-
-
 ## Installation
 
 ### Regular installation
