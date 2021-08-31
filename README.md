@@ -22,7 +22,7 @@ Copy the internation folder to the plugins folder of the reveal.js folder, like 
 
 This plugin is published to, and can be installed from, npm.
 
-```javascript
+```shell
 npm install reveal.js-internation
 ```
 The Verticator plugin folder can then be referenced from `node_modules/reveal.js-internation/plugin/internation`
