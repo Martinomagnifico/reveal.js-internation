@@ -10,6 +10,61 @@ You should probably actually know these other languages (or someone who does) to
 
 
 
+
+
+## Installation
+
+### Regular installation
+
+Copy the internation folder to the plugins folder of the reveal.js folder, like this: `plugin/internation`.
+
+### npm installation
+
+This plugin is published to, and can be installed from, npm.
+
+```javascript
+npm install reveal.js-internation
+```
+The Verticator plugin folder can then be referenced from `node_modules/reveal.js-internation/plugin/internation`
+
+
+## Setup
+
+### JavaScript
+
+The Internation plugin has been written for Reveal.js version 4. Internation also works in setups with multiple Reveal instances.
+
+There are two JavaScript files for Internation, a regular one, `internation.js`, and a module one, `internation.esm.js`. You only need one of them:
+
+#### Regular 
+If you're not using ES modules, for example, to be able to run your presentation from the filesystem, you can add it like this:
+
+```html
+<script type="text/javascript" src="dist/reveal.js"></script>
+<script src="plugin/internation/internation.js"></script>
+<script>
+	Reveal.initialize({
+		// ...
+		plugins: [ Internation ]
+	});
+</script>
+```
+#### As a module 
+If you're using ES modules, you can add it like this:
+
+```html
+<script type="module">
+	// This will need a server
+	import Reveal from './dist/reveal.esm.js';
+	import Internation from './plugin/internation/internation.esm.js';
+	Reveal.initialize({
+		// ...
+		plugins: [ Internation ]
+	});
+</script>
+```
+
+
 ## Configuration
 
 There are a few options that you can change from the Reveal.js options. The values below are default and do not need to be set if they are not changed.
@@ -74,6 +129,7 @@ Reveal.initialize({
     plugins: [ Internation ]
 });
 ```
+
 Next, and this is important, **load the page with this URL parameter: ...index.html?makejson**. This will immediately download a JSON file of your current HTML structure. The URL step is a safeguard for if you accidentally publish with makejson:true in the options turned on.
 
 ### Example dictionary/JSON
@@ -146,7 +202,6 @@ Reveal.initialize({
 });
 ```
 
-
 ## Switching languages
 
 If you want multiple languages, you will probably also want users to choose. Internation listens to 'change' events of either a select or a set of radio buttons inside the presentation. By default, this is any element with the class `langchooser`, but that classname can be changed in the options.
@@ -167,4 +222,3 @@ And if you want to show off what you made with it, please do :-)
 MIT licensed
 
 Copyright (C) 2021 Martijn De Jongh (Martino)
-
