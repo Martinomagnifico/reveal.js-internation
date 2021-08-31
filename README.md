@@ -6,24 +6,45 @@ A plugin for [Reveal.js](https://revealjs.com) 4, that can let the end user choo
 
 You should probably actually know these other languages (or someone who does) to be able to do so :-)
 
-[![Screenshot](screenshot.png)](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
+[![Screenshot](https://martinomagnifico.github.io/reveal.js-internation/screenshot.png)](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
+
+
+
+## Configuration
+
+There are a few options that you can change from the Reveal.js options. The values below are default and do not need to be set if they are not changed.
+
+```javascript
+Reveal.initialize({
+	// ...
+	internation: {
+		locale: "en",
+		localename: 'English',
+		langattribute: "data-i18n",
+		switchselector: ".langchooser",
+		html: true,
+		languages: {},
+		debug: false,
+		makejson: false
+	},
+	plugins: [ Internation ]
+});
+```
+
+* **`locale`**: The shortened version of the language that the presentation is made in. 
+* **`localename`**: The human-readable name of the language that the presentation is made in. 
+* **`langattribute`**: The name of the language attribute. Use this to 'tag' your texts.
+* **`switchselector`**: The selector for switching languages while running the presentation.
+* **`html`**: Boolean to allow HTML inside the translation files and tags. Set to 'true' by default.
+* **`languages`**: You can put whole dictionary objects here, instead of JSON files, if you *really* want to allow local file access.
+* **`debug`**: Boolean to allow debugging. Set to 'false' by default.
+* **`makejson`**: Boolean to set 'makejson' mode. Set to 'false' by default. See "Step 3" below.
 
 
 ## Step 1. Define the current language.
 
-Internation has English as default language. You can change it if you like in the options:
+Internation has English as the default language. You can change it if you like in the options.
 
-
-```javascript
-Reveal.initialize({
-    //
-    internation: {
-        locale: "en",
-        localename: "English"
-    },
-    plugins: [ Internation ]
-});
-```
 
 ## Step 2. Start tagging your text
 
@@ -53,7 +74,7 @@ Reveal.initialize({
     plugins: [ Internation ]
 });
 ```
-Next, **load the page with this URL parameter: ...index.html?makejson**. This will immediately download a JSON file of your current HTML structure. The URL step is a safeguard for if you accidentally publish with makejson:true in the options turned on.
+Next, and this is important, **load the page with this URL parameter: ...index.html?makejson**. This will immediately download a JSON file of your current HTML structure. The URL step is a safeguard for if you accidentally publish with makejson:true in the options turned on.
 
 ### Example dictionary/JSON
 
@@ -126,10 +147,24 @@ Reveal.initialize({
 ```
 
 
-# Switching languages
+## Switching languages
 
 If you want multiple languages, you will probably also want users to choose. Internation listens to 'change' events of either a select or a set of radio buttons inside the presentation. By default, this is any element with the class `langchooser`, but that classname can be changed in the options.
 
 You can put these on a slide (like the first page of the demo with the flags) or outside them in an element that is visible on multiple slides (like the menubar in the examples). 
 
 The demo has a fake select in the menubar that works with radio buttons. You can pick and style your own way of switching.
+
+
+
+## Like it?
+If you like it, please star this repo! 
+
+And if you want to show off what you made with it, please do :-)
+
+
+## License
+MIT licensed
+
+Copyright (C) 2021 Martijn De Jongh (Martino)
+
