@@ -22,7 +22,7 @@ This plugin is published to, and can be installed from, npm.
 ```console
 npm install reveal.js-internation
 ```
-The Verticator plugin folder can then be referenced from `node_modules/reveal.js-internation/plugin/internation`
+The Internation plugin folder can then be referenced from `node_modules/reveal.js-internation/plugin/internation`
 
 
 ## Setup
