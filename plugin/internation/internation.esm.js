@@ -234,6 +234,10 @@ var Plugin = function Plugin() {
           switchSetter(selects, event.target.value);
           setText(event.target.value);
           sessionStorage['InternationSettingsStorage'] = event.target.value;
+          if (options.reload_on_lang_change){
+            Reveal.getCurrentSlide().remove();
+            window.location.reload(false);
+            }
         });
       });
     };
@@ -295,7 +299,8 @@ var Plugin = function Plugin() {
       html: true,
       languages: {},
       debug: false,
-      makejson: false
+      makejson: false,
+      load_on_lang_change: false,
     };
 
     var defaults = function defaults(options, defaultOptions) {
