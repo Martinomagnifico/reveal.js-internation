@@ -1,0 +1,33 @@
+{
+   "slides": {
+      "examples":{
+         "title":"أمثلة"
+      },
+      "intro":{
+         "subtitle":"Reveal.js لِ"
+      },
+      "fruit":{
+         "title":"الفواكه",
+         "apple":"تفاحة",
+         "orange":"برتقالة"
+      },
+      "diner":{
+         "title":"مطعم شعبي",
+         "pizza":"بيتزا",
+         "hamburger":"هامبرغر"
+      },
+      "animals":{
+         "title":"حيوانات",
+         "dog":"كلب",
+         "cat":"قطة"
+      },
+      "html":{
+         "title":"HTML محتوى",
+         "paragraph":"هذه فقرة نص عادية",
+         "htmlparagraph":"<a href=\"#\">HTML</a> هذه فقرة نص تحتوي على عنصر "
+      }
+   },
+   "menubar": {
+       "chooselanguage": "اختر اللغة"
+   }
+}

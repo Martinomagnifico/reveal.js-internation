@@ -19,10 +19,14 @@ const Plugin = () => {
 		return params;
 	};
 
+	const getCookie = function (name) {
+		let value = `; ${document.cookie}`;
+		let parts = value.split(`; ${name}=`);
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	}
 
-	const readJson = (file, options = {
-			method: 'get'
-		}) =>
+
+	const readJson = (file, options = { method: 'get' }) =>
 		new Promise((resolve, reject) => {
 			let request = new XMLHttpRequest();
 			request.onload = resolve;
@@ -99,7 +103,6 @@ const Plugin = () => {
 
 		const getTextContent = function(deck, options) {
 
-
 			let sections = revealEl.querySelectorAll(`section`);
 			let JSON = false;
 
@@ -163,13 +166,18 @@ const Plugin = () => {
 			let pickdict = langs[pickLang].dictionary;
 			let origdict = langs[options.locale].dictionary;
 
+			if (langs[pickLang].direction && langs[pickLang].direction == 'rtl') {
+				deck.configure({rtl:true})
+			} else {
+				deck.configure({rtl:false})
+			}
+
 			// Set language for elements outside 'slides'
 			let idDivs = revealEl.querySelectorAll(":scope > [id]:not(.slides)");
 			idDivs.forEach(idDiv => {
 				let divid = idDiv.id;
 				let langattributes = idDiv.querySelectorAll(`[${options.langattribute}]`);
 				attributeLooper(langattributes, pickdict, origdict, divid);
-
 			});
 
 			// Set language for elements inside 'slides'
@@ -189,7 +197,7 @@ const Plugin = () => {
 		const switchSetter = function(selects, value) {
 			selects.forEach(thisselect => {
 				thisselect.value = value;
-				document.documentElement.setAttribute('lang', value);
+				deck.getRevealElement().setAttribute('lang', value);
 				let radio = thisselect.querySelector(`input[value='${value}']`);
 				if (radio) {
 					radio.checked = true;
@@ -198,11 +206,10 @@ const Plugin = () => {
 		}
 
 		const langSwitcher = function() {
-
 			let selects = deck.getRevealElement().querySelectorAll(options.switchselector);
 
-			if (sessionStorage['InternationSettingsStorage']) {
-				let langPref = sessionStorage['InternationSettingsStorage'];
+			if (sessionStorage['InternationSettingsStorage'] || getCookie('InternationSettings')) {
+				let langPref = sessionStorage['InternationSettingsStorage'] ? sessionStorage['InternationSettingsStorage'] : getCookie('InternationSettings');
 				switchSetter(selects, langPref);
 				setText(langPref);
 			}
@@ -213,6 +220,7 @@ const Plugin = () => {
 					switchSetter(selects, event.target.value);
 					setText(event.target.value);
 					sessionStorage['InternationSettingsStorage'] = event.target.value;
+					document.cookie = `InternationSettings=${event.target.value};max-age=${60 * 60 * 24 * 14}`;
 				});
 
 			});
@@ -227,7 +235,7 @@ const Plugin = () => {
 		}
 		if (Object.keys(langs).length === 0 && langs.constructor === Object) {
 			debugLog(`There are no languages defined.`);
-			Reveal.on( 'ready', event => {
+			deck.on( 'ready', event => {
 				getTextContent(deck, options);
 			});
 

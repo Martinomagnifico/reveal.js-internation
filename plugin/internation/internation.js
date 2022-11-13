@@ -4,7 +4,7 @@
  * https://github.com/Martinomagnifico
  *
  * Internation.js for Reveal.js 
- * Version 1.0.4
+ * Version 1.1.0
  * 
  * @license 
  * MIT licensed
@@ -17,23 +17,17 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.Internation = factory());
-}(this, (function () { 'use strict';
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Internation = factory());
+})(this, (function () { 'use strict';
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
 
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function (obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-
-    return _typeof(obj);
+    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+      return typeof obj;
+    } : function (obj) {
+      return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, _typeof(obj);
   }
 
   var Plugin = function Plugin() {
@@ -58,6 +52,12 @@
       }
 
       return params;
+    };
+
+    var getCookie = function getCookie(name) {
+      var value = "; ".concat(document.cookie);
+      var parts = value.split("; ".concat(name, "="));
+      if (parts.length === 2) return parts.pop().split(';').shift();
     };
 
     var readJson = function readJson(file) {
@@ -190,7 +190,18 @@
 
       var setText = function setText(pickLang) {
         var pickdict = langs[pickLang].dictionary;
-        var origdict = langs[options.locale].dictionary; // Set language for elements outside 'slides'
+        var origdict = langs[options.locale].dictionary;
+
+        if (langs[pickLang].direction && langs[pickLang].direction == 'rtl') {
+          deck.configure({
+            rtl: true
+          });
+        } else {
+          deck.configure({
+            rtl: false
+          });
+        } // Set language for elements outside 'slides'
+
 
         var idDivs = revealEl.querySelectorAll(":scope > [id]:not(.slides)");
         idDivs.forEach(function (idDiv) {
@@ -217,7 +228,7 @@
       var switchSetter = function switchSetter(selects, value) {
         selects.forEach(function (thisselect) {
           thisselect.value = value;
-          document.documentElement.setAttribute('lang', value);
+          deck.getRevealElement().setAttribute('lang', value);
           var radio = thisselect.querySelector("input[value='".concat(value, "']"));
 
           if (radio) {
@@ -229,8 +240,8 @@
       var langSwitcher = function langSwitcher() {
         var selects = deck.getRevealElement().querySelectorAll(options.switchselector);
 
-        if (sessionStorage['InternationSettingsStorage']) {
-          var langPref = sessionStorage['InternationSettingsStorage'];
+        if (sessionStorage['InternationSettingsStorage'] || getCookie('InternationSettings')) {
+          var langPref = sessionStorage['InternationSettingsStorage'] ? sessionStorage['InternationSettingsStorage'] : getCookie('InternationSettings');
           switchSetter(selects, langPref);
           setText(langPref);
         }
@@ -240,6 +251,7 @@
             switchSetter(selects, event.target.value);
             setText(event.target.value);
             sessionStorage['InternationSettingsStorage'] = event.target.value;
+            document.cookie = "InternationSettings=".concat(event.target.value, ";max-age=").concat(60 * 60 * 24 * 14);
           });
         });
       };
@@ -253,7 +265,7 @@
 
       if (Object.keys(langs).length === 0 && langs.constructor === Object) {
         debugLog("There are no languages defined.");
-        Reveal.on('ready', function (event) {
+        deck.on('ready', function (event) {
           getTextContent(deck, options);
         });
       }
@@ -325,4 +337,4 @@
 
   return Plugin;
 
-})));
+}));

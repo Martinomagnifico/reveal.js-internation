@@ -2,11 +2,12 @@
 
 [![Version](https://img.shields.io/npm/v/reveal.js-internation)](#) [![Downloads](https://img.shields.io/npm/dt/reveal.js-internation)](https://github.com/Martinomagnifico/reveal.js-internation/archive/refs/heads/master.zip)
 
-A plugin for [Reveal.js](https://revealjs.com) 4, that can let the end user choose a language for the presentation. Creating additional languages is made easy by letting you tag elements that should be translated. Running the presentation in 'makejson'-mode will generate a full JSON file of the whole current presentation. You can then start translating this file into other languages.
+A plugin for [Reveal.js](https://revealjs.com), that can let the end user choose a language for the presentation. Creating additional languages is made easy by letting you tag elements that should be translated. Running the presentation in 'makejson'-mode will generate a full JSON file of the whole current presentation. You can then start translating this file into other languages.
 
 You should probably actually know these other languages (or someone who does) to be able to do so :-)
 
-[![Screenshot](https://martinomagnifico.github.io/reveal.js-internation/screenshot.png)](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
+[<img src="https://martinomagnifico.github.io/reveal.js-internation/screenshot.png" width="800" height="450">](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
+
 
 
 ## Installation
@@ -29,11 +30,10 @@ The Internation plugin folder can then be referenced from `node_modules/reveal.j
 
 ### JavaScript
 
-The Internation plugin has been written for Reveal.js version 4. Internation also works in setups with multiple Reveal instances.
-
 There are two JavaScript files for Internation, a regular one, `internation.js`, and a module one, `internation.esm.js`. You only need one of them:
 
 #### Regular 
+
 If you're not using ES modules, for example, to be able to run your presentation from the filesystem, you can add it like this:
 
 ```html
@@ -159,7 +159,9 @@ Make a copy of your first generated JSON. Give the file a name that is obvious (
 
 ## Step 5A. Refer to your new language file(s)…
 
-A language in Internation contains both a name and a dictionary. This example shows that a JSON file is used for the dictionary. JSON files will only work if there is a server. It will not work with the file:// protocol.
+A language in Internation contains both a name, a dictionary and an optional direction. This example shows that a JSON file is used for the dictionary. JSON files will only work if there is a server. It will not work with the file:// protocol. 
+
+The direction can be added if you want to change the HTML reading direction when you change the language to any 'rtl' language like Hebrew or Arabic.
 
 ```javascript
 Reveal.initialize({
@@ -169,6 +171,11 @@ Reveal.initialize({
             fr: {
                 name: "Français",
                 dictionary: "fr.json"
+            },
+            ar: {
+                name: "العربية",
+                dictionary: "ar.json",
+                direction: "rtl"
             }
         }
     },
@@ -218,4 +225,4 @@ And if you want to show off what you made with it, please do :-)
 ## License
 MIT licensed
 
-Copyright (C) 2021 Martijn De Jongh (Martino)
+Copyright (C) 2022 Martijn De Jongh (Martino)

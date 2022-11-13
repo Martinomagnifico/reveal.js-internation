@@ -1,16 +1,16 @@
 {
     "name": "reveal.js-internation",
-    "version": "1.0.4",
-    "description": "Localization of Reveal.js presentations",
-    "keywords": "reveal, reveal.js, reveal-plugin, plugin, internationalization",
+    "version": "1.1.0",
+    "description": "Internation is a localization (i10n) or internationalization (i18n) plugin for Reveal.js that reads language dictionaries from JSON files. The author can add switches to the presentation to let the user choose a language.",
+    "keywords": "reveal, reveal.js, reveal-plugin, plugin, internationalization, i18n, localization, i10n, rtl",
     "homepage": "https://github.com/Martinomagnifico/reveal.js-internation",
     "repository": {
         "type": "git",
         "url": "https://github.com/Martinomagnifico/reveal.js-internation.git"
     },
-    "peerDependencies": {
-        "reveal.js": "^4.0"
-    },
     "author": "Martijn De Jongh",
-    "license": "MIT, Copyright (C) 2020 Martijn De Jongh"
+    "license": "MIT, Copyright (C) 2022 Martijn De Jongh",
+    "peerDependencies": {
+        "reveal.js": "^4.2"
+    }
 }
