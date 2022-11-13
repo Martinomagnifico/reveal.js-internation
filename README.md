@@ -6,7 +6,7 @@ A plugin for [Reveal.js](https://revealjs.com), that can let the end user choose
 
 You should probably actually know these other languages (or someone who does) to be able to do so :-)
 
-[<img src="https://martinomagnifico.github.io/reveal.js-internation/screenshot.png" width="800" height="450">](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
+[<img src="https://martinomagnifico.github.io/reveal.js-internation/screenshot.png" width="100%">](https://martinomagnifico.github.io/reveal.js-internation/demo.html)
 
 
 
