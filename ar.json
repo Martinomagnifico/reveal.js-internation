@@ -4,7 +4,7 @@
          "title":"أمثلة"
       },
       "intro":{
-         "subtitle":"Reveal.js لِ"
+         "subtitle":"<bdi>Reveal.js لِ</bdi>"
       },
       "fruit":{
          "title":"الفواكه",
@@ -22,9 +22,9 @@
          "cat":"قطة"
       },
       "html":{
-         "title":"HTML محتوى",
+         "title":"<bdi>HTML محتوى</bdi>",
          "paragraph":"هذه فقرة نص عادية",
-         "htmlparagraph":"<a href=\"#\">HTML</a> هذه فقرة نص تحتوي على عنصر "
+         "htmlparagraph":"<bdi><a href=\"#\">HTML</a> هذه فقرة نص تحتوي على عنصر</bdi>"
       }
    },
    "menubar": {
