@@ -247,7 +247,7 @@ body:not(.hide-menubar) .reveal.ready .menubar {
 
 a.github-corner {
   position: absolute;
-  z-index: 1;
+  z-index: 5;
   width: clamp(50px, 8vmax, 80px);
   line-height: 0;
   color: rgba(255, 255, 255, 0.5);
